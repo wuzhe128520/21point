@@ -1,0 +1,141 @@
+.availscreen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 640px;
+  height: 480px;
+  background: #0D4E29;
+  margin: auto;
+  text-align: center;
+}
+.banker {
+  color: #01CC33;
+  line-height: 40px;
+}
+.banker.footplay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.cardwrap .player {
+  width: 605px;
+  height: 154px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.cardwrap .player img {
+  width: 85px;
+  height: 121px;
+}
+.cardbtn {
+  position: relative;
+  height: 55px;
+}
+.cardbtn button {
+  margin-top: 10px;
+  width: 96px;
+  height: 34px;
+  background: #DDB80D;
+  color: #9A3400;
+  border-radius: 25px;
+  margin-right: 10px;
+}
+.cardbtn button:first-child {
+  display: none;
+}
+.cardbtn button:last-child {
+  margin-right: 0;
+}
+.cardbtn button:hover {
+  background: #82c621;
+  color: #fdfe0f;
+}
+.playerPoint {
+  color: #F0460A;
+  line-height: 20px;
+  position: relative;
+}
+.playerPoint.machine {
+  visibility: hidden;
+}
+.computerscore {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #FFFF01;
+  font-weight: bold;
+}
+.playscore {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #FFFF01;
+  font-weight: bold;
+}
+#dealCard {
+  display: none;
+}
+#progressbar{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height:10px;
+  width:300px;
+  border:1px solid #63B8FF;
+  border-radius:5px;
+  text-align:center;
+  line-height:10px;
+  font-size:0.8em;
+  z-index: 1;
+}
+#progress{
+  position:absolute;
+  /*  border:1px solid;*/
+  height:100%;
+  width:0;
+  background:#BFEFFF;
+  border-radius:5px;
+  z-index:-1;
+}
+#progress{
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(-45deg, #63B8FF,#63B8FF 25%, #BFEFFF
+  25%,#BFEFFF 50%, #63B8FF 50%, #63B8FF 75%, #BFEFFF 75%, #BFEFFF);
+  background-image: -moz-linear-gradient(-45deg, #63B8FF,#63B8FF 25%, #BFEFFF
+  25%,#BFEFFF 50%, #63B8FF 50%, #63B8FF 75%, #BFEFFF 75%, #BFEFFF);
+  background-image: linear-gradient(-45deg, #63B8FF,#63B8FF 25%,#BFEFFF
+  25%,#BFEFFF 50%, #63B8FF 50%, #63B8FF 75%, #BFEFFF 75%, #BFEFFF);
+  -webkit-animation: animate 1.5s linear infinite;
+  -moz-animation: animate 1.5s linear infinite;
+  animation: animate 1.5s linear infinite;
+}
+@-webkit-keyframes animate {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 60px 30px;
+  }
+}
+@-moz-keyframes animate {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 60px 30px;
+  }
+}
+@keyframes animate {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 60px 30px;
+  }
+}

@@ -1,0 +1,263 @@
+一、21点游戏分析
+
+1、玩家构造器
+属性：
+     name: 名字
+     ownCards: 当前持有的牌(数组)
+     isPlaying: 是否正在游戏中
+     point: 分数;
+方法：
+      putCards: 获取牌之后，将牌放入自己的ownCards数组
+      getPoint: 获取当前牌面的点数(分为获取明牌的点数和获取所有牌的点数)
+      isNeedCard: 是否需要牌(普通玩家通过事件点击判断，电脑玩家通过简单的ai智能判断)
+function Player (name,ownCards,isPlaying) {
+  this.name = name;
+  this.ownCards = ownCards;
+  this.point = 0;
+  this.isPlaying = isPlaying;
+}
+Player.prototype = {
+   //保存得到的牌
+   putCards: function (singleCard) {
+      this.ownCards.push(singleCard);
+      return this.ownCards;
+   },
+   //得到当前牌的点数(isAllPoint表示是否获得所有牌(包括暗牌)的点数，为false则只获取明牌的点数)
+   getPoint: function (isAllPoint) {
+       var sumPoint=0,
+           aryLength=this.ownCards.length;
+           for (var i = (isAllPoint ? 0 : 1);i < aryLength;i++) {
+             sumPoint+=this.ownCards[i];
+           }
+   },
+   //是否需要牌
+   isNeedCard: function () {
+
+   }
+};
+//庄家：
+function User (name) {
+  this.name = name;
+}
+User.prototype=new Player();
+User.prototype.isNeedCard = function (isRequiedCard) {
+    return isRequiedCard;//true需要牌，false不需要牌
+}
+//电脑玩家
+function GamePlayer (name) {
+  this.name = name;
+}
+GamePlayer.prototype=new Player();
+GamePlayer.prototype.isNeedCard = function (userObj){
+    var userPoint = userObj.getPoint(false);//得到明牌的点数
+    var gamePoint = this.point;
+    var differ=gamePoint - userPoint;
+    if(differ > 0){
+       var poor = 21 - gamePoint;
+       if(poor >= 1 && poor <= 2){
+           ai.probability(10);
+       }
+       else if(poor >= 3 && poor <= 5){
+           ai.probability(25);
+       }
+        else if(poor >= 6 && poor <= 9){
+                  ai.probability(50);
+          }
+          else {
+             return true;
+          }
+    }
+    else {//如果点数小于庄家的明牌点数则百分之百需要牌
+       return true;
+    }
+}
+2、AI构造器
+   原则：如果人脑的牌面上的点数比我（电脑）目前的大，必须要
+      如果我们的牌面已经比他大，那么这个时候，我们要不要牌就通过几率来判断
+		如果离21点还少1-2个点，要牌的概率就是10%  1/10
+		如果离21点还少3-5个点，要牌的概率就是25%
+		如果离21点还少6-9个点，要牌的概率就是50%
+		如果离21点还少10个点以上，要牌的概率就是100%
+		//概率执行函数
+    function probability(percent){//percent: 10 25 50 100
+       var baseRange = 100;
+       var percent = 10;
+       var data =Math.floor(Math.random()*baseRange );
+       if(data >=0&&data<percent ){
+          return true;
+      }
+    }
+    function AI(player,gameplay){//当前需要牌的玩家
+       this.player=player;
+       this.gameplay=gameplay;
+
+    }
+    var ai=new AI();
+    AI.prototype={
+      //概率事件
+      probability: function(percent){//percent: 10 25 50 100
+             var baseRange = 100;
+             var percent = 10;
+             var data =Math.parseInt(Math.random()*baseRange );
+             if(data >=0&&data<percent ){
+             //发牌
+               return true;
+            }
+          },
+    }
+   属性：
+       玩家对象
+       电脑对象
+   方法：
+       judge: 
+3、牌构造器Cards
+ function Cards (count){
+   this.cards=[];
+   this.count=count;
+ }
+ Cards.prototype={
+    init: function () { //几副牌
+       var count=count,
+           cards=this.cards;
+       for(var n=0;n<count;n++) {
+       for( var i = 1;i <= 4;i++ ){
+            for (var j = 1;j <= 13 ;j++) {
+                cards.push( {
+                   color: i,//1: 黑桃 2：红桃 3：梅花 4：方片
+                   point: j > 10 ? 10 : j,
+                   src: "images/"+i+"/"+j+".jpg"
+                } );
+            }
+       }
+      }
+      return cards;
+    }
+ }
+4、21点游戏系统构造器
+/*
+ wj: 玩家对象
+ computers: 电脑个数
+ cardCount: 几副牌
+*/
+function 21Point(wj,computers,cardCount) {
+   this.player=wj;
+   this.computers=[];
+   this.cardCount=cardCount||1;
+}
+21Point.prototype = {
+    //洗牌
+    shuffle: function(puke){//puke牌对象
+          puke.sort(function(a,b){
+            return parseInt(Math.random()*3)-1;
+          });
+          return puke;
+    },
+    //发牌
+    sendCard: function(puke){//puke对象
+       var card=puke.pop();
+       return card;//发出去的那张牌
+    },
+    //裁决
+    verdict: function(player,gameplays) {
+    //这里的point必须是小于等于21的
+       var playerSumPoint=this.player.getPoint();
+       var gameSumPoint=this.gameplays.getPoint();
+       if(playerSumPoint == 21 || playerSumPoint > gameSumPoint){
+            alert("庄家赢");
+       }
+       else {
+         alert("电脑赢");
+       }
+       player=null;
+       gameplays=null;
+    },
+    //是否出局
+    isGetOut: function(player){
+       var point=player.getPoint();
+         if(point>21){
+            //将当前玩家的游戏状态isPlaying改为false;
+
+         }
+    }
+}
+/*
+    //将发的牌显示到页面上
+    //有几位玩家，用要发的牌的总数去取余
+    /*var requireSendCard=4;
+
+    for(var i = 0;i < banker.length;i++){
+        var hasCardLength = game.players[i].ownCards.length;
+        for(var j = 0;j < hasCardLength ;j++){
+            game.players[i].ownCards[j].src;
+
+        }
+    }*/
+    /*console.log(game.players[0]);
+    for(var o in game.computers){
+        console.log("电脑对象：");
+        console.log((game.computers[o].valueOf()));
+    }
+    for(var o in game.players){
+        console.log("所有对象：");
+        console.log((game.players[o].valueOf()));
+    }*/
+    /*    console.log("初始化牌……");
+        for(var i=0;i<game.card.cards.length;i++){
+            var imgs=document.createElement("img");
+                 imgs.src=game.card.cards[i].src;
+                document.body.appendChild(imgs);
+        }
+        document.write("<hr><\b><hr>");;
+        game.card.cards=game.shuffle();//洗牌
+        console.log("洗牌后："+game.card.cards.toLocaleString());
+        for(var i=0;i<game.card.length;i++){
+            var img=document.createElement("img");
+            img.src=card[i].src;
+            document.body.appendChild(img);
+        }
+        for(var i=0;i<game.card.cards.length;i++){
+            var img=document.createElement("img");
+            img.src=game.card.cards[i].src;
+            document.body.appendChild(img);
+        }
+        var sendimg=game.sendCard();
+        console.log("发牌后："+game.card.cards.toLocaleString());
+        console.log("发出去的牌是："+sendimg.src)
+        document.write("<br/>")
+        document.write("<img src="+sendimg.src+">");*/
+    //发牌
+    /*
+    console.log("发牌了");
+    document.write("<hr>");
+    document.write("<img src="+sendimg.src+">");*/
+       /* for(var i=0;i<4;i++){//发牌三次测试
+
+            //console.log(senededcard.point);
+        }*/
+    /*while(time<=3){
+        setTimeout(function(){
+            var currentPlayer=players[i];
+            var senededcard=game.sendCard();
+            currentPlayer.putCards(senededcard);
+            i++;
+        },500)
+    }*/
+    //console.log(zs.name+"的点数是："+zs.getPoint(false));
+    //console.log(card.cards.length);
+*/
+分析问题：
+一、如何判断A是1点还是11点(前提是：多个A只能当一个值，不能一个当作1另一个当作11)
+1、每次发牌，判断当前对象手里的牌和正在发的牌，是否有A。
+  如果有，
+       将他分别设置为11或1
+       如果设置为11时，没有超过21，A则都为11；(这种情况只有一个A才行)
+       否则，设为1。
+二、玩家对象和电脑对象如何与浏览器上的视图绑定
+1、在新建对象的时候，给每个对象绑定一个viewId
+2、给每个对象动态的创建所需要的视图，并设置一个自定义属性的值为viewId
+3、
+三、如何让发牌具有动画效果，电脑玩家能否每次要牌都显示对应分数，
+    而不是一下子就显示最终的分数。
+四、裁决时，木有判断black jack
+
+     

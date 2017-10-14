@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset=UTF-8>
+    <title>21点游戏</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<div class="availscreen" >
+    <div id="progressbar"><div id='progress'></div><p></p></div>
+    <div style="display:none;" id="gameview">
+        <div class="computerscore">得分：<span>0</span></div>
+        <div class="banker">
+            <span>庄家：</span><span id="bankerName">张三丰</span>
+        </div>
+        <div class="cardwrap">
+            <div class="clearfix player" playerobj="1" id="banker">
+            </div>
+        </div>
+        <p class="playerPoint machine" id="machinePoint">0</p>
+        <div class="cardbtn">
+            <button id="requireCard">叫牌</button><button id="sendCard">发牌</button><button id="dealCard">听牌</button>
+        </div>
+        <div class="cardwrap">
+            <div class="clearfix player" playerobj="2" id="normalPlayer">
+            </div>
+        </div>
+    <p class="playerPoint" id="playerPoint">0点</p>
+    <div class="banker footplay">
+        <span>玩家：</span><span id="playerName">我浪故我在</span>
+    </div>
+    <div class="playscore">得分：<span>0</span></div>
+    </div>
+</div>
+<script type="text/javascript" src="js/game.js"></script>
+</body>
+</html>
